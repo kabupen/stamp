@@ -1,0 +1,142 @@
+\chapter{誤差論}
+\subsection{誤差の伝播}
+N点の計測（$x_1, x_2, ..., x_n$）を行う。測定値それぞれに誤差がついている場合（$x_1\pm\Delta x_1, x_2\pm\Delta x_2, ..., x_n\pm\Delta x_n$）、測定結果の合計、平均にはどのような誤差が付くか。
+
+
+\subsubsection{加減乗除}
+
+\begin{eqnarray}
+  (x\pm \sigma_x) \pm ( y \pm \sigma_y) &=& (x\pm y) \pm \sqrt{ \sigma_x^2 + \sigma_y^2} \\
+  (x\pm \sigma_x) / ( y \pm \sigma_y)   &=& \frac{x}{y} \pm \sqrt{ \left( \frac{\sigma_x}{y} \right)^2 + \left( \frac{x \cdot \sigma_y}{ y^2} \right)^2}
+\end{eqnarray}
+
+
+
+\subsubsection{合計の誤差}
+
+\begin{equation}
+  y=\Sigma_i~x_i=x_1+x_2+...+x_n=n\times\frac{1}{n}(x_1+x_2+...+x_n)=n\bar{x}
+\end{equation}
+
+誤差の和はｙに対して、
+
+\begin{equation}
+  \Delta y = \sqrt{\left(\frac{\partial}{\partial x_1}y \right)^2 \Delta x_1^2 + ... + } = \sqrt{\Sigma_{i=1}\left(\frac{dy}{dx_i}\right)^2\Delta x_i^2}
+\end{equation}
+
+として伝搬する(誤差伝搬の公式).
+今の場合、
+\begin{equation}
+  \frac{\partial}{\partial x_1}n\times \frac{1}{n}(x_1+x_2+...+x_n)=1
+\end{equation}
+
+となるので、
+
+\begin{equation}
+  \Delta y=\sqrt(\Sigma(\Delta x_i)^2)
+\end{equation}
+
+測定値$x_{i}$の分散は、測定したn点から事前に計算される。
+なので誤差の伝播の式を進めると、
+\begin{equation}
+  \Delta y=\sqrt{ns^2}=\sqrt{n}s
+\end{equation}
+となる。
+
+\subsubsection{平均の誤差}
+測定値の平均値には、
+\begin{equation}
+  \bar{x}=\frac{1}{n}\Sigma x_i
+\end{equation}
+
+誤差伝搬の式を適用して、
+\begin{equation}
+  \Delta \bar{x} = \sqrt{n\times\left(\frac{1}{n}\right)^2s^2}=\frac{1}{\sqrt{n}}
+\end{equation}
+
+この式は、平均値の誤差は測定点の数のルートN倍で小さくなっていくことを示している。測定を繰り返し行い、平均を得た場合にどのように誤差が小さくなっていくかを示している。
+
+- 計数の誤差
+- 計数$N$の統計誤差は$\sqrt{N}$で表される
+
+\subsubsection{ヒストグラムにおける誤差}
+ここまでの議論は、例えば粒子の不変質量を測定した場合に、あるイベントでは$m_1$[GeV]、あるイベントでは$m_2$[GeV]、...と測定した時に、その測定量に対してどれくらい誤差が付いているかを論じてきた。
+議論をもう一度繰り返すと、$n$回測定した質量の平均値は、
+
+\begin{equation}
+  \bar{m}=\frac{1}{n}\Sigma m_i
+\end{equation}
+
+測定結果の分散は、
+
+\begin{equation}
+  V=\Sigma(m_i-\bar{\mu})・・・(☆)
+\end{equation}
+
+で表される。しかし、これらの議論はヒストグラムの場合には少し特殊な議論となる。よく不変質量の分布をヒストグラムにしたりして議論を進めていくが、この時によく「ヒストグラムにエラーバーを付けて」と言われるが、このエラーバーはここまでの誤差とは若干違っている。(☆)の誤差は不変質量の測定値に付くものであって、ヒストグラムのそれぞれのビンにつくものではない。
+
+\subsection{ビンにつく誤差}
+「ヒストグラムのエラー」は、そのビンにいる統計数に対して考える。よくみるヒッグス粒子の不変質量を例に取ってみよう。（☆）の議論はヒッグス質量125GeVに対して$125GeV \pm \sigma_{H}$ という形で付くものである。これは強いて言うなら下図の横方向(x軸方向)に対しての誤差である、
+
+では、図に示されている縦方向の誤差は一体なんでしょうか？これこそが高エネ実験領域でよく耳にする「統計誤差」というものである。
+
+\subsubsection{考え方}
+例えば1番目のビンに注目する。このビンでカウントされている事象数を仮に460事象と読み取ることにする。
+これを「とある確率分布に従う事象を観測し、平均値460事象観測した」と捉える。よく用いられる確率分布はポワソン分布である(\ref{subsubsec:poisson}節)。
+簡単に分散$V=460$、$\sigma=\sqrt{460}$と求めることができる。これがヒストグラムの計量の際の誤差である。感覚的には、縦方向に（各ビンに）ある確率分布があって、それらの平均値をつなぐようにしてヒッグス質量分布が計算されているとすればいい。
+
+\subsubsection{誤差はどうなっていくか}
+統計量が溜まってくると、1ビン〜10000事象とかがあるかもしれない。こういうときにポワソン分布でヒストグラムのエラーバーを考えていいのか？という疑問が湧いてくる。答えは**ガウス分布**を使う、が、「考え方」は変わらないということである。
+
+- 二項分布→ポワソン分布
+- 二項分布において$\lambda$を一定にして、$n$を大きく、$p$を小さくするとポワソン分布になる
+- ポワソン分布→ガウス分布
+- ポワソン分布で$\lambda$を大きくすると、期待値$\lambda$、分散$\lambda$のガウス分布になる
+- 二項分布→ガウス分布
+- 期待値$np$、分散$np(1-p)$の両方が大きい場合、期待値$np$、$分散np(1-p)$のガウス分布になる
+
+上記の関係性を思い出せば、1ビンあたりの統計量（＝１ビンで観測したイベントの期待数）が大きくなっても、結局は分散$\lambda$のガウス分布に従っているので、ヒストグラムのエラーバーはやはり$\sqrt{N}$になる。
+
+つまりヒストグラムのエラーバーは、
+
+$N\pm\sqrt{N}$
+
+の関係で成り立っている（ポワソン分布orガウス分布に由来するものであることに留意）。
+
+
+\subsection{「誤差は$\frac{1}{\sqrt{N}}$で小さくなっていく」の真実}
+誤差の大きさそのものが$\frac{1}{\sqrt{N}}$なのではなく、ここで言っている誤差は「XX\%」の誤差に相当するものである。ヒストグラムの誤差は、
+
+\begin{equation}
+  N\pm\sqrt{N}
+\end{equation}
+
+で付くものだったから、1ビンに対する誤差は
+
+\begin{equation}
+  \frac{\sqrt{N}}{N}\times 100 = \frac{1}{\sqrt{N}} \%
+\end{equation}
+
+である。つまり、1ビンに入る統計数が多くなればなるほど、統計量が増えれば増えるほど、誤差は、$\frac{1}{\sqrt{N}}$で小さくなっていきます。
+なので、できる限り統計量を貯める、という至極まっとうな感想が生まれてきます。
+
+ちなみに、例えばあるビンの統計数が1事象だった場合の誤差は、
+
+\begin{equation}
+  1\pm 1
+\end{equation}
+
+で、「なんだ、誤差の大きさは1じゃん、小さいじゃん」と思うかもしれないが、
+
+\begin{equation}
+  \frac{\sqrt{1}}{1}\times 100 = 100 \%
+\end{equation}
+
+の誤差が付いているという事実を忘れてはならない。ちなみに100事象貯めれば、
+
+\begin{equation}
+  \frac{\sqrt{100}}{100}\times 100 = 10 \%
+\end{equation}
+
+10\%の誤差にまで削減することができるのである。
+
