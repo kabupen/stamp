@@ -1,0 +1,33 @@
+\documentclass[a4j,twocolumn, uplatex]{jsarticle}
+
+\usepackage{bm}
+
+\begin{document}
+
+\section{決定理論}
+%２つの確率変数$X$, $Y$を考える。$X$かつ$Y$が起きる確率は同時確率（joint probability）と呼ばれ、
+%\begin{equation}
+%  p(X,Y)
+%\end{equation}
+%で表される。
+%周辺確率（marginal probability）
+決定理論とは、パターン認識のように確率論をベースにして意思決定を行うための枠組みである。
+同時確率からベイズの定理を経由して、確率から最適な決定を導き出すことができる。
+
+まず訓練データを用いて、入力変数$\bm{x}$と対応する目標変数$\bm{t}$（回帰問題であれば連続変数、分類問題であればクラスラベルの離散変数）
+から同時確率$p(\bm{x},\bm{t})$を求める。
+以下ではクラス分類モデルに対しての決定理論を構築する。
+
+ベイズの定理から、「ある入力$\bm{x}$に対して、クラス$C_k$である確率」を表現することができ、
+\begin{equation}
+  p(C_k|\bm{x}) = \frac{p(\bm{x}|C_k)p(C_k)}{p(\bm{x})}
+\end{equation}
+これらの情報は全て同時確率から求めることができる。
+\begin{eqnarray}
+  && p(\bm{x}|C_k)p(C_k) = p(\bm{x}, C_k) \\
+  && p(\bm{x}) =  \int p(\bm{x}, C_k) dC_k
+\end{eqnarray}
+
+
+
+\end{document}
