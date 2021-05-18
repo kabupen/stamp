@@ -6,3 +6,6 @@
 ## MVA
 - [section1](books/mva/section1_regression.html)
 
+### problems
+- [section1](books/mva/section1_problemB.html)
+
