@@ -4,7 +4,8 @@
 - [matplotplib](howto/matplotlib.html)
 
 ## MVA
-- [section1](books/mva/section1_regression.html)
+- [section1 線形回帰](books/mva/section1_regression.html)
+- [section2 主成分分析](books/mva/section2_pca.html)
 
 ### problems
 - [section1](books/mva/section1_problemB.html)
