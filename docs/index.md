@@ -15,6 +15,9 @@
 - [section1](books/pml3rd/section4.html)
 
 
+## 深層学習による自然言語処理
+- [chapter2](books/nlpdl/chapter2.html)
+
 ## 論文
 - [NLP](papers/natural_language_processing.md)
 
