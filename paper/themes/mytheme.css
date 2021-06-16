@@ -1,0 +1,42 @@
+/* @theme mytheme */
+
+@import 'default';
+
+section {
+  padding: 0px 50px 10px 50px;
+  /*position: absolute;*/
+}
+
+div {
+  background: blue;
+}
+
+h1 {
+    color: black;
+    font-family: "Arial", "Hiragino Kaku Gothic ProN";
+    font-size: 40px;
+    /*position: absolute;*/
+    /*left: 50px; */
+    /*top: 30px;*/
+}
+
+
+h2 {
+    color: midnightblue;
+    font-family: "Arial", "Hiragino Kaku Gothic ProN";
+    font-size: 30px;
+    margin-top: 5px;
+    padding-bottom: 0px;
+    text-align: top;
+}
+
+p {
+    font-size: 23px;
+    position: left;
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
+ul, ol {
+    font-size: 23px;
+}
