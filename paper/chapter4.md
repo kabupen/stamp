@@ -288,7 +288,7 @@ $$
 	- $D\times \mathcal{V}$ の埋め込み行列 $E$ を用いて次のように入力情報変換を行う
 
 $$
-I(\boldsymbol{x}) = \sum_{j\in \mathcal{V}} E \boldsymbol{x}_j
+I(\boldsymbol{x}) = \sum_{j} E \boldsymbol{x}_j
 $$
 
 - 式(4.20) はこれ以降この節では登場しないが...察するに（cf.新版では$I(x)$は削除されている）
@@ -297,11 +297,10 @@ $$
 	- $i=1,...,N$ （$N$ 個の"入力"文）を使用することで、計$N$個の記憶情報を追加することになる
 
 $$
-I(\boldsymbol{x}_i) = \sum_{j\in \mathcal{V}} E \boldsymbol{x}_{ij}
+I(\boldsymbol{x}_i) = \sum_{j} E \boldsymbol{x}_{ij}
 $$
 
-# 教師あり記憶ネットワーク
-
+#
 ## モデルから返答を引き出すための "入力"
 
 - さきの $\boldsymbol{x}$ の "入力" とは意味が違うと思う
@@ -325,8 +324,81 @@ $$
 r = \mathop{\text{argmax}}\limits_{w\in \mathcal{V}} s_R ( (\boldsymbol{x}, \boldsymbol{m}_{o1}, \boldsymbol{m}_{o2}), w)
 $$
 
+
+#
+
+- スコア関数
+	- $x$ は入力（質問文）、$y$ は使用する知識（$m$）
+	- $\phi$ は情報を $D$ 次元特徴量ベクトルに変換する関数（cf. $I(x)=\sum_{j\in\mathcal{V}} Ex_j$）
+	- $U$ は $N\times D$の行列
+		- スコア関数毎に異なる行列を使用する
+	- $(1\times D) \times (D\times N) \times (N\times D) \times (D\times 1)$ でスコア $s$ はスカラー値
+
+$$
+s(\boldsymbol{x}, \boldsymbol{y}) = \phi^{(x)}(x)^\text{T}~U^{\text{T}}~U~\phi^{(y)}(y)
+$$  
+
+### 学習
+
+- 以下の式を最小化する
+
+$$
+\begin{aligned}
+ &\sum \text{max}(0, \gamma - s_O(x, m_{o_1^*}) + s_O(x, m_{o})) \\
++ &\sum \text{max}(0, \gamma - s_O((x, m_{o_1^*}), m_{o_2^*}) + s_O(x, m_{o})) \\
++ &\sum \text{max}(0, \gamma - s_R((x, m_{o_1^*}, m_{o_2^*}) + s_R(x, m_{o_1^*}, m_{o_2^*} )) 
+\end{aligned}
+$$
+
 # end-to-end 記憶ネットワーク
 
+- 根拠情報を使用しない
+	- 知識、質問文、返答文、の3種類のみで学習する
+	- 根拠情報が与えられないので、どの知識を使用するかを考えなければならない = 注意機構の利用
+
+- 知識のインプット
+	- $D\times \mathcal{V}$ の埋め込み行列 $A$
+	- 知識源となる単語列の埋め込みベクトルの総和を取って、知識として記憶する
+	- 知識源のインデックスは $i$、その各単語のインデックスは $j$
+
+$$
+\boldsymbol{m}_i = \sum_{j} A \boldsymbol{x}_{ij}
+$$
+
+- 質問文の入力
+	- 同様に質問文も $D$ 次元特徴量ベクトルに変換する（やってこることは知識のインプットと一緒）
+	- いま質問文は一文のみを考えているので、文を区別するようなインデックス（例えば $i$）は付けていない
+$$
+\boldsymbol{u} = \sum_{j} B \boldsymbol{q}_{j}
+$$
+
+#
+
+- $N$ 個の記憶情報に対して、$\boldsymbol{u}$ にとっての重要度を $\{p_1,...,p_N\}$ で表す
+	- $p_i$ の大きな値の記憶情報が、返答生成にとって重要な情報である
+	- $\boldsymbol{u}$ と $\boldsymbol{m_i}$ の内積のソフトマックスを取る
+$$
+p_i = \frac{\exp(\boldsymbol{u}\cdot\boldsymbol{m}_i)}{\sum_{k=1}^N \exp(\boldsymbol{u}\cdot\boldsymbol{m}_k)}
+$$
+
+- 回答に利用する出力の情報は、$m_i$ とは別のベクトル $c_i$ を作る
+	- 記憶を作った $B$ とはまた別の行列 $C$ を用意して、符号化を行う (やることは一緒)
+$$
+\boldsymbol{c_i} = \sum_{j} C \boldsymbol{x}_{ij}
+$$
+
+- $\boldsymbol{c_i}$ を重要度 $p_i$ で重み付けを行う（ソフト注意機構）
+
+$$
+\boldsymbol{o} = \sum_{i=1}^N p_i\boldsymbol{c}_i
+$$
+
+- 生成した出力情報を、ヒトが理解できる言葉に変換する（返答の選択)
+	- 正解 $a$ との誤差を交差エントロピーで評価することで学習が行える
+$$
+\boldsymbol{\hat{a}} = \text{softmax}(W(\boldsymbol{o}+\boldsymbol{u}))
+$$
+ 
 # 動的記憶ネットワーク
 
 - Dynamic memory networks (DMN)
@@ -337,8 +409,146 @@ $$
 	- 回答
 
 
-# §4.3 出力層の高速化
+# 出力層の高速化
+- 目的関数として交差エントロピーを考えてきた
+	- 質問文 $\boldsymbol{x}$ 、予測対象 $y\in\mathcal{Y}$
+	- $\mathcal{Y}$ は語彙集合であり、数万〜数百万という膨大な数になる 
+$$
+\begin{aligned}
+\ell_\theta^{\text{cross-entropy}} &= -\log \frac{\exp(f_\theta(x,y))}{\sum_{\tilde{y}\in \mathcal{Y}} \exp(f_\theta(x,\tilde{y}))} \\
+&= -f_\theta(x,y) + \log\sum_{\tilde{y}\in \mathcal{Y}} \exp(f_\theta(x,\tilde{y}))\\
+&= -s(y) + \log Z(\mathcal{Y})
+\end{aligned}
+$$
+- ここで：
+	- $s(y) \coloneqq f_\theta(x,y)$, $Z(\mathcal{Y}) \coloneqq \sum \exp(s(\tilde{y}))$（分配関数）
+
+- 交差エントロピーはソフトマックス関数の対数を計算しているとみなせる
+	- 膨大な語彙数に伴う、巨大なソフトマックス関数の計算はコストが高いという問題を生じる
+$$
+\ell_\theta^{\text{cross-entropy}}  = -\frac{\exp(s(y))}{Z(\mathcal{Y})}
+$$
+
+# 
+- 目的関数（損失関数）の勾配は
+$$
+\nabla\ell_\theta = -\nabla s(y) + \nabla \log Z(\mathcal{Y})
+$$
+- 第二項は
+$$
+\begin{aligned}
+\nabla\log Z(\mathcal{Y}) &= \sum_{\tilde{y}\in\mathcal{Y}} \frac{\exp(s(\tilde{y}))}{Z(\mathcal{Y})}s^\prime(\tilde{y}) \\
+&= \sum p(\tilde{y})s^\prime(\tilde{y})\\
+&= E_{Y\sim p}[ s^\prime(\tilde{y})]
+\end{aligned}
+$$
+
+- ここで	
+	- $p(y) \coloneqq \frac{\exp(s(y))}{Z(\mathcal{Y})}$ 
+	- $Y$ は確率密度関数 $p(\cdot)$ に従う確率変数
+
+- 膨大な語彙数に対して、分配関数の勾配の計算コストが高くついてしまう。
+なんとかして計算量を減らす工夫はないか？
+	- 以降の節で高速化の手法について議論する
 
 
+# 重点サンプリング
+
+- 交差エントロピーの勾配で一番の問題は $E_{Y\sim p}[ s^\prime(Y)]$ の膨大な計算量
+	- 直接MCで近似しようとしても、$p$ を求めるために結局分配関数の計算が必要となる
+		- 本末転倒...
+	- 重点サンプリングでは、近似のために提案分布 $q(Y^\prime)$ と呼ばれる分布を用いる
+		- $q$ は一様分布や単語の出現頻度分布など、そもそも推定しやすい分布を使用する
+
+$$
+\begin{aligned}
+E_{Y^\prime\sim q}\left[ s^\prime(Y^\prime)\frac{p(Y^\prime)}{q(Y^\prime)} \right] &= \sum_{\tilde{y}\in\mathcal{Y}} s^\prime(\tilde{y}^\prime)\frac{p(\tilde{y}^\prime)}{q(\tilde{y}^\prime)}q(\tilde{y})   \\
+&= E_{Y\sim p}[ s^\prime(Y)]
+\end{aligned}
+$$
+
+- この関係式を用いて、MCで近似する
+	- 提案分布 $q$ に従う確率変数を $T$ 個サンプリングして、その期待値で近似する
+
+$$
+E_{Y\sim p}[ s^\prime(Y)] = E_{Y^\prime\sim q}\left[ s^\prime(Y^\prime)\frac{p(Y^\prime)}{q(Y^\prime)} \right] \simeq \frac{1}{T} \sum_{i=1}^T s^\prime(\bar{y}_i)\frac{p(\bar{y}_i)}{q(\bar{y}_i)}
+$$
+
+- 「さて、話はここで終わりません」
+	- 結局 $p(\cdot)$ の計算には $Z(\mathcal{Y})$ が必要となる
+	- $q$ からの標本に対する総和を利用して近似する
+
+#  
+- 語彙数 $\mathcal{Y}$として、一様分布 $u(x) = 1/|\mathcal{Y}|$ を考える
+	- この分布$u(x)$に従う確率変数$X$に対して、$\exp(s(X))$の期待値は
+
+$$
+\begin{aligned}
+& E_{X\sim u}[ \exp(s(X))] = \sum_{\tilde{x}\in\mathcal{Y}} \exp(s(\tilde{x}))\frac{1}{|\mathcal{Y}|} \\
+&\Leftrightarrow \sum_{\tilde{x}\in\mathcal{Y}} \exp(s(\tilde{x})) = |\mathcal{Y}|~E_{X\sim u}[ \exp(s(X))]  \\
+&\Leftrightarrow Z(\mathcal{Y}) = |\mathcal{Y}|~E_{X\sim u}[ \exp(s(X))]  
+\end{aligned}
+$$
+
+- $q$ の分布のもとでMC近似を再度行って
+
+$$
+\begin{aligned}
+Z(\mathcal{Y}) &= |\mathcal{Y}|~E_{X\sim u}[ \exp(s(X))] \\
+&= |\mathcal{Y}|~E_{Y^\prime\sim q}[ \exp(s(Y^\prime))\frac{u(Y^\prime)}{q(Y^\prime)}] \\
+&= |\mathcal{Y}|~E_{Y^\prime\sim q}[ \exp(s(Y^\prime))\frac{1}{|\mathcal{Y}|q(Y^\prime)}] \\
+&= E_{Y^\prime\sim q}[ \frac{\exp(s(Y^\prime))}{q(Y^\prime)}] \\
+&\simeq \frac{1}{T} \sum_{i=1}^T \frac{\exp(s(Y^\prime))}{q(Y^\prime)} \\
+&= \hat{Z}
+\end{aligned}
+$$
+
+# 
+
+- $\hat{Z}$ を用いて $p(y) = \exp(s(y))/Z(\mathcal{Y}) \simeq \exp(s(y))/\hat{Z}$ と近似できる
+
+- 以上を用いて、$E[ s^\prime(Y)]$ の近似が達成できる
+
+$$
+\begin{aligned}
+E_{Y\sim p}[ s^\prime(Y)] = E_{Y^\prime\sim q}\left[ s^\prime(Y^\prime)\frac{p(Y^\prime)}{q(Y^\prime)} \right] &\simeq \frac{1}{T} \sum_{i=1}^T s^\prime(\bar{y}_i)\frac{p(\bar{y}_i)}{q(\bar{y}_i)} \\
+
+&\simeq \frac{\sum_{i=1}^T s^\prime(\bar{y}_i) \exp(s(\bar{y}_i)))/q(\bar{y}_i)}{\sum_{i=1}^T \exp(s(\bar{y}_i))/q(\bar{y}_i)}
+\end{aligned}
+$$
+
+# 雑音対照推定（NCE）
+
+- 分配関数も未知のパラメータとして学習によって推定できないか？	
+	- $p(y)=\exp(s(y)+c)$ として、 $-\log p(y)$ の最小化を目指す
+	- 目的関数を変えることで、この推定がうまくいく（雑音対照推定）
+
+# 負例サンプリング
+
+- NCEをより単純化させた手法
+	- 一つの学習事例 $y$ ごとにランダムに生成した $k$ 個のノイズ $\bar{\mathcal{D}}=\{\bar{y}_1,...,\bar{y}_k\}$ とを識別するように学習する
+
+$$
+\ell_\theta^{\text{NS}}(y) = -\log \{\text{sigmoid}(s(y))\} - \sum_{\bar{y}\in\mathcal{D}}\log\{1-\text{sigmoid}(s(\bar{y}))\}
+$$
+
+- ノイズ分布 $q$ として、一様分布 or 単語出現頻度に比例した分布を使用できる
+	- 負例サンプリングは実装が単純で動作が早い
 
 
+# ブラックアウト
+
+- 
+
+
+# 階層的ソフトマックス
+
+- 通常のソフトマックス
+	- 全語彙集合の中から一つを選ぶ単一のソフトマックスを使って損失を計算する
+	- 計算コストが高い
+
+- 階層的ソフトマックス
+	- 二値分類器を連続させて、最終的に一つのラベルを選択する方法
+
+
+- 
