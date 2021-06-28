@@ -3,17 +3,15 @@ marp: true
 theme: mytheme
 size: 4:3
 paginate: true
-footer: "自然言語処理  勉強会  2021/06/21"
+footer: "自然言語処理  勉強会  2021/06/22"
 ---
 
 <!--
-headingDivider: 1
+headingDivider: 2
 -->
 
 
 # 注意機構 (attention mechanism)
-
-## 概要
 
 - 入力情報の中で特に注目すべき箇所を指定するための機能
 	- 画像処理、文字列処理 etc で使用されている
@@ -24,9 +22,9 @@ headingDivider: 1
 
 ## 種類 
 
-- ソフト注意機構
+- ソフト注意機構 (soft attention)
 	- 入力情報の重み付き平均を用いる方法
-- ハード注意機構
+- ハード注意機構 (hard attention)
 	- 入力情報のどれか一つを確率的に選択して用いる方法
 	- 2018年の段階では "hard attention (...略...) is much less widely used" [url](https://arxiv.org/pdf/1808.00300.pdf)
 		- この論文では、hard attention ベースの技術で competitive performance を出した
@@ -35,7 +33,7 @@ headingDivider: 1
 	- どっちに似てる？まったく別？
 
 
-# ソフト注意機構 
+## ソフト注意機構 
 
 - 系列変換モデルを考える
 - 入力系列 $\{x_1,...,x_I\}$、符号化されたベクトル $\{h_1^{(s)},..h_I^{(s)}\}$ として、各時刻の符号化層の隠れ状態ベクトルは
@@ -56,7 +54,7 @@ $$
 
 - これらを解決するために、ソフト注意機構を使用することができる
 
-#
+##
 
 - 符号化器の隠れ状態ベクトル $h_i^{(s)}$ の重要度を $a_{ij}$ と定義する
 - $a_{ij}$ による重み付き平均は ([Issue #15](https://github.com/mlpnlp/mlpnlp/issues/15))： 
@@ -86,7 +84,7 @@ $$
 	- softmax で１に規格化して確率化する
 
 
-# ソフト注意機構 (一般化した定義)
+## ソフト注意機構 (一般化した定義)
 
 - 参照したい情報（符号化器の隠れ状態）を $Y=\{y_1,...,y_N\}$ とする
 - 出力に使用する隠れ状態ベクトルを $h_j^{(t)}$ とする
@@ -99,14 +97,14 @@ $$
 
 - 復号化器からの出力 $h_j^{(t)}$ と $\hat{y}_j = \sum_{i=1}^N a_{ij}y_i$ を用いて最終的な情報を決定する
 
-## 要するに
+### 要するに
 
 - 復号化器の出力にとって符号化器の何が重要かを学習させる
 	- 重要度は $a_{ij}$ であり、確率として解釈できる
 - 符号化基の隠れ状態ベクトルの期待値をとることで、入力情報の直接的な伝播を実現する
 
 
-# ハード注意機構
+## ハード注意機構
 
 - 参照したい情報 $Y=\{y_1,...,y_N\}$ とする
 	- ex. $Y$ は符号化器隠れ状態ベクトル $\{h_1^{(s)},...,h_I^{(s)}\}$
@@ -125,8 +123,7 @@ $$
 	- そこで期待値を最小化する方法を取る
 	- "...but this is still a very active area of research." [link](https://arxiv.org/pdf/1808.00300.pdf)
 
-# 
-
+## 
 ### 期待値の最小化
 
 - 無作為抽出された $\hat{\boldsymbol{y}}$ を使って目的関数 $f(\hat{\boldsymbol{y}})$ が計算されたとする
@@ -181,8 +178,7 @@ $$
 E \left[ f(\hat{y}) \nabla \log a_x \right] \simeq \frac{1}{T} \sum_{i=1}^T f(y_{\bar{x}_i}) \nabla \log a_{\bar{x}_i} 
 $$
 
-# ソフトとハード注意機構の違い
-
+## ソフトとハード注意機構の違い
 
 ### 文字の整理
 
@@ -206,7 +202,7 @@ $$
 		- $f$ への入力は確率変数なので、$f$ の計算は複数回必要→MCで近似
 
 
-# ハード注意機構の学習における問題点
+## ハード注意機構の学習における問題点
 
 - MCで近似したときの $f(y_{\bar{x}_i}) \log a_{\bar{x}_i}$ の分散が大きくてうまく学習できないことがあることが知られている
 
@@ -237,13 +233,12 @@ $$
 	- $b=E[ f(\hat{y})]$を使用することが多いとのこと
 
 
-# その他の注意機構
+## その他の注意機構
 
 ...割愛... 
 
 # 記憶ネットワーク (memory networks) とは
 
-## 概要
 - より直接的に記憶の仕組みをモデル化することができる
 	- LSTMを始めとするRNNでは記憶の内容（隠れ状態ベクトル）は固定長で限定的だった
 	- 知識を蓄えておいて、質問に対して応答する
@@ -263,24 +258,22 @@ $$
 	- 応答：出力情報を適切なフォーマットに変換する
 
 
-# 記憶ネットワークの種類
-
-## 前提 
+## 記憶ネットワークの種類
+### 前提 
 - 根拠情報 (supporting fact) を使用するかどうか
 	- 最終的な出力（返答）を生成する際の根拠
 	- どんな知識を組み合わせて、この出力（返答）に至ったかを学習の段階で使用できるか
 		- ex. 対話ログのように、質問に対して返答のみが記録されている訓練データでは、根拠情報は欠けていると言える（どうしてその返答に至ったかは、本データからは定かではない）
 	- 「中間的な部分課題の解」とも教科書では言い換えられている
 
-## 教科書で議論する種類
+### 教科書で議論する種類
 - ３種類の記憶ネットワーク
 	- 根拠情報が与えられた条件下で学習を行う：強教師あり記憶ネットワーク
 	- 根拠情報を使用しない学習を行う：end-to-end 記憶ネットワーク
 	- 返答に使用する知識を繰り返し問い合わせるモデル：動的記憶ネットワーク
 
-# 教師あり記憶ネットワーク
-
-## 知識を蓄えるための "入力"
+## 教師あり記憶ネットワーク
+### 知識を蓄えるための "入力"
 - 知識を蓄える
 	- 記憶として蓄える文章（ここでは単語列）を $\boldsymbol{x}$ とおく
 		- 単語はone-hotベクトルになっていて、$\boldsymbol{x}_j$ で $j$ 番目の単語を示すとする
@@ -301,7 +294,7 @@ I(\boldsymbol{x}_i) = \sum_{j} E \boldsymbol{x}_{ij}
 $$
 
 #
-## モデルから返答を引き出すための "入力"
+### モデルから返答を引き出すための "入力"
 
 - さきの $\boldsymbol{x}$ の "入力" とは意味が違うと思う
 	- 式(4.21)以降の入力 $\boldsymbol{x}$ は、質問文としての入力（ちゃんとした文章）
@@ -409,10 +402,18 @@ $$
 	- 回答
 
 
-# 出力層の高速化
+# §4.3 出力層の高速化
+
 - 目的関数として交差エントロピーを考えてきた
 	- 質問文 $\boldsymbol{x}$ 、予測対象 $y\in\mathcal{Y}$
 	- $\mathcal{Y}$ は語彙集合であり、数万〜数百万という膨大な数になる 
+
+## 巨大なソフトマックス関数の課題
+
+- 式(2.2)で定義した交差エントロピー損失関数
+	- 質問文 $\boldsymbol{x}$ 、予測対象 $y\in\mathcal{Y}$
+	- $\mathcal{Y}$ は語彙集合であり、数万〜数百万という膨大な数になる 
+
 $$
 \begin{aligned}
 \ell_\theta^{\text{cross-entropy}} &= -\log \frac{\exp(f_\theta(x,y))}{\sum_{\tilde{y}\in \mathcal{Y}} \exp(f_\theta(x,\tilde{y}))} \\
@@ -420,8 +421,6 @@ $$
 &= -s(y) + \log Z(\mathcal{Y})
 \end{aligned}
 $$
-- ここで：
-	- $s(y) \coloneqq f_\theta(x,y)$, $Z(\mathcal{Y}) \coloneqq \sum \exp(s(\tilde{y}))$（分配関数）
 
 - 交差エントロピーはソフトマックス関数の対数を計算しているとみなせる
 	- 膨大な語彙数に伴う、巨大なソフトマックス関数の計算はコストが高いという問題を生じる
@@ -429,11 +428,13 @@ $$
 \ell_\theta^{\text{cross-entropy}}  = -\frac{\exp(s(y))}{Z(\mathcal{Y})}
 $$
 
-# 
-- 目的関数（損失関数）の勾配は
+- 学習の際には、目的関数の勾配が必要となるが：
 $$
 \nabla\ell_\theta = -\nabla s(y) + \nabla \log Z(\mathcal{Y})
 $$
+
+## 
+
 - 第二項は
 $$
 \begin{aligned}
@@ -444,66 +445,123 @@ $$
 $$
 
 - ここで	
-	- $p(y) \coloneqq \frac{\exp(s(y))}{Z(\mathcal{Y})}$ 
+	- $p(y) := \frac{\exp(s(y))}{Z(\mathcal{Y})}$ 
+		- 入力が与えられたときに、$\boldsymbol{y}$ を観測する確率
 	- $Y$ は確率密度関数 $p(\cdot)$ に従う確率変数
 
-- 膨大な語彙数に対して、分配関数の勾配の計算コストが高くついてしまう。
-なんとかして計算量を減らす工夫はないか？
-	- 以降の節で高速化の手法について議論する
+- 膨大な語彙数に対して、分配関数の勾配の計算コストが高くついてしまう。 なんとかして計算量を減らす工夫はないか？
+	- 以降で高速化の手法について議論する
+
+- 目的関数（交差エントロピー）の勾配の第二項（$\nabla\log Z(\mathcal{Y})$)を変形すると、期待値の形で書ける
+	- "期待値" ということに、物理的な深い意味があるのか...?は謎
+	- ただ、こうすることでモンテカルロサンプリング法を用いて、近似的に値を求めることができる
 
 
-# 重点サンプリング
+## サンプリング法について (一般的な説明)
 
-- 交差エントロピーの勾配で一番の問題は $E_{Y\sim p}[ s^\prime(Y)]$ の膨大な計算量
-	- 直接MCで近似しようとしても、$p$ を求めるために結局分配関数の計算が必要となる
-		- 本末転倒...
-	- 重点サンプリングでは、近似のために提案分布 $q(Y^\prime)$ と呼ばれる分布を用いる
-		- $q$ は一様分布や単語の出現頻度分布など、そもそも推定しやすい分布を使用する
+- 以下の期待値を評価したいが、解析的に評価するには複雑すぎる場合を考える
+	- ある関数 $f(x)$ の、確率分布 $p(x)$ の元での期待値の計算 (cf. 式(4.39))
+
+$$
+E[f(x)] = \sum f(x)p(x)
+$$
+
+- サンプリング法では、分布 $p(x)$ から独立に $L$ 個の $x_i~(i=1,...,L)$ を抽出して、
+その平均で近似することを考える
+
+$$
+E[f(x)] \simeq \frac{1}{L} \sum_{i=1}^L f(x_i) 
+$$
+
+- ここで右辺の性質に注目すると：
 
 $$
 \begin{aligned}
-E_{Y^\prime\sim q}\left[ s^\prime(Y^\prime)\frac{p(Y^\prime)}{q(Y^\prime)} \right] &= \sum_{\tilde{y}\in\mathcal{Y}} s^\prime(\tilde{y}^\prime)\frac{p(\tilde{y}^\prime)}{q(\tilde{y}^\prime)}q(\tilde{y})   \\
-&= E_{Y\sim p}[ s^\prime(Y)]
-\end{aligned}
+E\left[\frac{1}{L} \sum_{i=1}^L f(x_i) \right] &= \frac{1}{L} \sum_{i=1}^L E[f(x_i)] = \frac{1} {L}~L E[f(x)] = E[f(x)]\\
+V\left[\frac{1}{L} \sum_{i=1}^L f(x_i) \right] &= \frac{1}{L^2} \sum_{i=1}^L V[f(x_i)] = \frac{1}{L} V[f(x)]
+\end{aligned} 
 $$
 
-- この関係式を用いて、MCで近似する
-	- 提案分布 $q$ に従う確率変数を $T$ 個サンプリングして、その期待値で近似する
+- 十分なサンプリング数を取れれば ($L\to\infty$)、求めたい期待値 $E[f(x)]$ に収束する
 
-$$
-E_{Y\sim p}[ s^\prime(Y)] = E_{Y^\prime\sim q}\left[ s^\prime(Y^\prime)\frac{p(Y^\prime)}{q(Y^\prime)} \right] \simeq \frac{1}{T} \sum_{i=1}^T s^\prime(\bar{y}_i)\frac{p(\bar{y}_i)}{q(\bar{y}_i)}
-$$
 
-- 「さて、話はここで終わりません」
-	- 結局 $p(\cdot)$ の計算には $Z(\mathcal{Y})$ が必要となる
-	- $q$ からの標本に対する総和を利用して近似する
+## 重点サンプリングについて (一般的な説明)
 
-#  
-- 語彙数 $\mathcal{Y}$として、一様分布 $u(x) = 1/|\mathcal{Y}|$ を考える
-	- この分布$u(x)$に従う確率変数$X$に対して、$\exp(s(X))$の期待値は
+- 期待値を評価したいが、そもそも $p(x)$ から直接サンプリングすることが現実的でない場合
+	- ただ、任意の $x$ の値に対しては $p(x)$ が簡単に計算できるとする
+
+- $p(x)$ とは別の、サンプリングが容易な提案分布 $q(x)$ を利用する
+	- 提案分布...一様分布, 単語の出現確率分布 etc
 
 $$
 \begin{aligned}
-& E_{X\sim u}[ \exp(s(X))] = \sum_{\tilde{x}\in\mathcal{Y}} \exp(s(\tilde{x}))\frac{1}{|\mathcal{Y}|} \\
-&\Leftrightarrow \sum_{\tilde{x}\in\mathcal{Y}} \exp(s(\tilde{x})) = |\mathcal{Y}|~E_{X\sim u}[ \exp(s(X))]  \\
-&\Leftrightarrow Z(\mathcal{Y}) = |\mathcal{Y}|~E_{X\sim u}[ \exp(s(X))]  
+E[f(x)] &= \sum f(x)p(x)\\
+&= \sum f(x)\frac{p(x)}{q(x)}q(x) \\
+& \simeq \frac{1}{L} \sum_{i=1}^L f(x)\frac{p(x)}{q(x)} \\
 \end{aligned}
 $$
 
-- $q$ の分布のもとでMC近似を再度行って
+- 最後の近似で、$q(x)$ に従う $f(x)p(x)/q(x)$ を $L$ 個サンプリングした
+	- 数量 $p(x_i)/q(x_i)$ は重要度重み (importance weight)と呼ばれる
+	- 求めたいものとは異なった分布からサンプリングすることで生じるバイアスを補正する
+
+## 重点サンプリング (教科書に戻って...)
+
+- Recap : 交差エントロピーの勾配
+
+$$
+\nabla \ell = -\nabla s(y) + \nabla \log Z(\mathcal{Y}) = -\nabla s(y) + E_{Y\sim p}[s^\prime(Y)]
+$$
+
+- 一番の問題は $E_{Y\sim p}[ s^\prime(Y)]$ の膨大な計算量
+	- 単純にサンプリング法で $p(y)$ からの抽出で近似したい
+	- が、$p(y)$ を思い出すと(式(4.33), 式(4.39))、分母が全語彙集合の和を含んでいるので、標本を得るために結局計算時間がかかってしまう... $\to p(y)$ から直接サンプリングできない
+
+$$
+p(y) = \frac{\exp(s(y))}{Z(\mathcal{Y})}
+$$
+
+- そこで、(一回目の) 重点サンプリングを用いる
+	- 提案分布 $q(Y^\prime)$ 
 
 $$
 \begin{aligned}
-Z(\mathcal{Y}) &= |\mathcal{Y}|~E_{X\sim u}[ \exp(s(X))] \\
-&= |\mathcal{Y}|~E_{Y^\prime\sim q}[ \exp(s(Y^\prime))\frac{u(Y^\prime)}{q(Y^\prime)}] \\
-&= |\mathcal{Y}|~E_{Y^\prime\sim q}[ \exp(s(Y^\prime))\frac{1}{|\mathcal{Y}|q(Y^\prime)}] \\
-&= E_{Y^\prime\sim q}[ \frac{\exp(s(Y^\prime))}{q(Y^\prime)}] \\
-&\simeq \frac{1}{T} \sum_{i=1}^T \frac{\exp(s(Y^\prime))}{q(Y^\prime)} \\
-&= \hat{Z}
+E_{Y\sim p}[ s^\prime(Y)]
+&= \sum_{\tilde{y}\in\mathcal{Y}} s^\prime(\tilde{y}^\prime)\frac{p(\tilde{y}^\prime)}{q(\tilde{y}^\prime)}q(\tilde{y})   \\
+&= E_{Y^\prime\sim q}\left[ s^\prime(Y^\prime)\frac{p(Y^\prime)}{q(Y^\prime)} \right] \\
+& \simeq \frac{1}{T} \sum_{i=1}^T s^\prime(\bar{y}_i)\frac{p(\bar{y}_i)}{q(\bar{y}_i)}
 \end{aligned}
 $$
 
-# 
+
+## 「さて、話はここで終わりません」
+
+- 重点サンプリングによって、式(4.44)の形に近似できることがわかった
+	- けど、 結局 $p(\cdot)$ の計算には依然として $Z(\mathcal{Y})$ の計算が必要となる
+	- $Z(\mathcal{Y})$ も重点サンプリング法を用いて近似する
+
+- 語彙数 $|\mathcal{Y}|$ を用いた一様分布の確率密度関数 $u(x) = 1/|\mathcal{Y}|$ を考える
+
+$$
+\begin{aligned}
+E_{X\sim u}[\exp (s(X))] &= \sum_{\tilde{x}\in\mathcal{Y}} \exp (s(\tilde{x})) u(\tilde{x})\\
+& = \sum_{\tilde{x}\in\mathcal{Y}} \exp (s(\tilde{x})) \frac{1}{|\mathcal{Y}|} \\
+\Leftrightarrow Z(\mathcal{Y}) &= |\mathcal{Y}|~E_{X\sim u}[\exp (s(X))]
+\end{aligned}
+$$
+
+- で、(2回目の) 重点サンプリングで $Z$ を近似する
+	- これは重点サンプリングなのか...? 最後の近似は通常のサンプリングでは?
+
+$$ 
+\begin{aligned}
+Z(\mathcal{Y}) &= |\mathcal{Y}|~E_{X\sim u}[\exp (s(X))] \\
+&= |\mathcal{Y}|~E_{Y^\prime\sim q} \left[\exp (s(Y^\prime))\frac{u(Y^\prime)}{q(Y^\prime)}\right] \\
+&=  E_{Y^\prime\sim q}\left[\exp (s(Y^\prime))\frac{1}{q(Y^\prime)}\right] \simeq \frac{1}{T} \sum_{i=1}^T \frac{\exp(s(\tilde{y}_i))}{q(\tilde{y}_i)} := \hat{Z}
+\end{aligned}
+$$
+
+## 
 
 - $\hat{Z}$ を用いて $p(y) = \exp(s(y))/Z(\mathcal{Y}) \simeq \exp(s(y))/\hat{Z}$ と近似できる
 
@@ -517,13 +575,51 @@ E_{Y\sim p}[ s^\prime(Y)] = E_{Y^\prime\sim q}\left[ s^\prime(Y^\prime)\frac{p(Y
 \end{aligned}
 $$
 
-# 雑音対照推定（NCE）
+- 何がしたかったか：$\nabla\ell$ が計算したかった
+	- 重点サンプリングを使用することで、語彙数 $|\mathcal{Y}|$ に依存した項を全て取り除くことができた
 
-- 分配関数も未知のパラメータとして学習によって推定できないか？	
-	- $p(y)=\exp(s(y)+c)$ として、 $-\log p(y)$ の最小化を目指す
-	- 目的関数を変えることで、この推定がうまくいく（雑音対照推定）
 
-# 負例サンプリング
+## 雑音対照推定（Noise Contrastive Eetimation）
+
+- （よく分かりませんでしたが...）
+	- 式(4.54)を使うとして、これがどう近似になっているか？ 
+	- 訓練データに対するノイズ？
+
+- 重点サンプリングでは分配関数 $Z$ の計算を近似した
+	- 分配関数も未知のパラメータとして学習によって推定できないか？	
+	- $c$ も学習対象のパラメーターとする
+
+$$
+p(y) = \frac{\exp(s(y))}{Z(\mathcal{Y})} = \exp(s(y))\exp(c)
+$$
+
+- 通常の最尤推定では、$c$ がフリーパラメーターなのでなんとでもなってしまう
+	- そこで Noise Contrastive Estimation (NCE) によって、新しい目的関数を定義する
+
+## NCEで定義する目的関数
+
+- NCEでは学習対象のデータと、ノイズの分布からの標本を識別する分類器を考える
+	- 確率密度関数 $q(\cdot)$ に従う分布からノイズ標本を得る
+	- 確率変数は訓練データであれば $D=1$、ノイズ標本であれば $D=0$
+
+$$
+\begin{aligned}
+P(D=0|Y=y) &= \frac{P(D=0,Y=y)}{P(Y=y)} = \frac{\frac{k}{k+1}q(y)}{\frac{1}{k+1}p(y)+\frac{k}{k+1}q(y)} = \frac{kq(y)}{p(y)+kq(y)}\\
+P(D=1|Y=y) &=  \frac{p(y)}{p(y)+kq(y)}\\
+\end{aligned}
+$$
+
+- 訓練データ $y$ に対してノイズ分布 $q$ からの $k$ 個の標本を無作為抽出する
+	- NCE では以下の関数を最小化する
+
+$$
+\begin{aligned}
+\ell_{\theta}(y) &= -\log P(D=1|y) - \sum_{\tilde{y}\in\bar{\mathcal{D}}} \log P(D=0|\tilde{y}) \\
+&= -\log \frac{p(y)}{p(y)+kq(y)} - \sum_{\bar{y}\in\bar{\mathcal{D}}} \log \frac{kq(\bar{y})}{p(\bar{y})+kq(\bar{y})}
+\end{aligned}
+$$
+
+## 負例サンプリング (Negative sampling)
 
 - NCEをより単純化させた手法
 	- 一つの学習事例 $y$ ごとにランダムに生成した $k$ 個のノイズ $\bar{\mathcal{D}}=\{\bar{y}_1,...,\bar{y}_k\}$ とを識別するように学習する
@@ -538,17 +634,62 @@ $$
 
 # ブラックアウト
 
-- 
+- ...
 
 
-# 階層的ソフトマックス
+## 階層的ソフトマックス
 
 - 通常のソフトマックス
-	- 全語彙集合の中から一つを選ぶ単一のソフトマックスを使って損失を計算する
-	- 計算コストが高い
+	- 全語彙集合 $|\mathcal{Y}|$ の中から一つを選ぶ単一のソフトマックスを使って損失を計算する
+	- 数万〜数百万語彙空間の総和、$O(N)$ の計算量
+
+$$
+p(y) = \frac{\exp(s(y))}{\sum_{\tilde{y}\in\mathcal{Y}}\exp(s(\tilde{y}))}
+$$
 
 - 階層的ソフトマックス
 	- 二値分類器を連続させて、最終的に一つのラベルを選択する方法
+	- ex. 猫,犬,鍋をいきなり「動物」「調理器具」と分けるのではなく、「生物」「無生物」に分けて、そこから...という形で階層的に分類していく
+	- どうやって二分木を作るか？は設計工夫の一つ
+	- 二分木にすることで計算コストが $\log_2|\mathcal{Y}|$ に落ちる
+
+- ここではハフマン符号化（Huffman coding）
+	- 単語を出現頻度順に並べて、最も登場回数の多い単語に最も短い符号を当てる
+
+## ハフマン符号化
+
+- 可逆変換アルゴリズムで、JPEGやZIPなどの圧縮アルゴリズムで使用されている技術
+- 手順
+	- 登場の単語を出現頻度順（全頻度で割れば確率になる, 適宜読み替え）に並べる
+	- 登場ランクワースト1と2の単語をノードで結ぶ
+	- 新しくできたノードにその合計の頻度を割り当てる
+		- ここで新しいノードを単語として扱って、並び替えを行う
+	- 再度ワースト1と2の単語を結ぶ...(繰り返し)
+	- あとは左に0右に1を割り当てて、各単語までノードを移動すれば良い
+
+![width:300px center](fig/huffman_coding.png)
 
 
-- 
+## 階層的ソフトマックスの計算方法
+
+- ハフマン符号木上で、ある単語にたどり着くには二値分類を何度か通過する
+	- ex. 前ページの「d」だと、18→7→3→2と進む
+	- 各ノードの移動の際に、0(左) か 1(右) かソフトマックス関数での判断を繰り返す
+	- ハフマン符号化で作ったツリーはその構造を利用するだけで、出現頻度数に基づいてノードに割り当てられた確率は使用しない
+
+
+- ある単語（葉ノード） $y$ が選択される確率
+	- $L(y)$：経路の長さ（単語に当たるまでの深さ）
+	- root(根)から単語 $y$ までの経路上の各ノード $\pi_j(y)$、ビット値 $b_j(y)=0,1$
+	（ここで $j$ は深さを表す）
+	- $2b_j(y)-1=-1,1$で、ソフトマックス関数が反転する
+
+$$
+P(y) = \prod_{j=1}^{L(y)} p(\pi_j(y), b_j(y)),
+$$
+
+$$
+\text{where}~~p(\pi_j(y),b_j(y)) = \text{sigmoid}\left((2b_j(y)-1)f_\theta(\pi_j(y) \right))
+$$
+
+- 学習の際には、対数尤度$-\log P(y)$ を最大化するように最適化を行う

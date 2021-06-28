@@ -26,9 +26,10 @@ h2 {
     color: midnightblue;
     font-family: "Arial", "Hiragino Kaku Gothic ProN";
     font-size: 26px;
-    margin-top: 10px;
+    margin-top: 30px;
     margin-bottom: 0px;
-    padding-bottom: 0px;
+    padding-top: 50px;
+    padding-bottom: 10px;
     text-align: top;
 }
 
