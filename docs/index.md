@@ -2,6 +2,7 @@
 
 ## Python Libraries
 - [matplotplib](howto/matplotlib.html)
+- [pandas](howto/pandas.html)
 
 ## MVA
 - [section1 線形回帰](books/mva/section1_regression.html)
