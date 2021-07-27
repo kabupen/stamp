@@ -1,9 +1,9 @@
 # Fdb version 3
-["dvipdf"] 1620354690 "section1.dvi" "section1.pdf" "section1" 1620457286
-  "section1.dvi" 1620354690 2052 d098e09692d9f6d8f9929cd3e03082c1 "latex"
+["dvipdf"] 1621660193 "section1.dvi" "section1.pdf" "section1" 1621749342
+  "section1.dvi" 1621660193 4076 194d92982f67f0bd983f43fdae1cb66e "latex"
   (generated)
   "section1.pdf"
-["latex"] 1620354690 "section1.tex" "section1.dvi" "section1" 1620457286
+["latex"] 1621660192 "section1.tex" "section1.dvi" "section1" 1621749342
   "/usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
@@ -16,6 +16,7 @@
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmmib10.tfm" 1136768653 1524 554068197b70979a55370e6c6495f441 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1136768653 1288 655e228510b4c2a1abe905c368440826 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmr8.tfm" 1136768653 1292 21c1c5bfeaebccffdb478fd231a0997d ""
+  "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmss10.tfm" 1136768653 1316 b636689f1933f24d1294acdf6041daaa ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/cm/cmss12.tfm" 1136768653 1324 37b971caf729d7edd9cbb9f9b0ea76eb ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/uptex-fonts/jis/upjisg-h.tfm" 1522271273 812 52bd92aa20c58a398601cda6dd62c8d1 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/uptex-fonts/jis/upjisg-v.tfm" 1522271273 536 5f2475e9deb198c23894800d3c5eed00 ""
@@ -28,8 +29,8 @@
   "/usr/local/texlive/2020/texmf-dist/web2c/texmf.cnf" 1583102494 39451 60d7debd9ef8ece44cbe965493576c2d ""
   "/usr/local/texlive/2020/texmf-var/web2c/euptex/uplatex.fmt" 1589971584 2441661 105ffff94d9bfdcfd49e0cca7518ffe1 ""
   "/usr/local/texlive/2020/texmf.cnf" 1586288231 577 d60164b4589a341208aff7a667fbbdcb ""
-  "section1.aux" 1620354690 106 d8ceaf3d0da4bf06e2f6f30787421a5b "latex"
-  "section1.tex" 1620457286 1356 c475dc2dfee0053d8f5aca738df23fdd ""
+  "section1.aux" 1621660193 523 655b0dfb8bebf10e3d4b041eccb899e5 "latex"
+  "section1.tex" 1621749342 2746 733a980a0d837842bb49f49d7a174ba4 ""
   (generated)
   "section1.dvi"
   "section1.aux"

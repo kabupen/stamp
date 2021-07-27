@@ -1,4 +1,4 @@
-This is e-upTeX, Version 3.14159265-p3.8.3-u1.26-191112-2.6 (utf8.uptex) (TeX Live 2020) (preloaded format=uplatex 2020.5.20)  7 MAY 2021 11:31
+This is e-upTeX, Version 3.14159265-p3.8.3-u1.26-191112-2.6 (utf8.uptex) (TeX Live 2020) (preloaded format=uplatex 2020.5.20)  22 MAY 2021 14:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -92,31 +92,32 @@ LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
 (Font)              scaled to size 11.09619pt on input line 7.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
 (Font)              scaled to size 11.09619pt on input line 7.
+LaTeX Font Info:    Font shape `JT2/gt/m/n' will be
+(Font)              scaled to size 9.24683pt on input line 13.
+LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
+(Font)              scaled to size 9.24683pt on input line 13.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 17.
+(Font)              <7> on input line 16.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 17.
+(Font)              <5> on input line 16.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 6.47278pt on input line 17.
+(Font)              scaled to size 6.47278pt on input line 16.
 LaTeX Font Info:    Font shape `JY2/mc/m/n' will be
-(Font)              scaled to size 4.62341pt on input line 17.
+(Font)              scaled to size 4.62341pt on input line 16.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 9.24683pt on input line 17.
+(Font)              scaled to size 6.47278pt on input line 16.
 LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 6.47278pt on input line 17.
-LaTeX Font Info:    Font shape `JY2/gt/m/n' will be
-(Font)              scaled to size 4.62341pt on input line 17.
+(Font)              scaled to size 4.62341pt on input line 16.
  [1
-
 
 ] (./section1.aux) ) 
 Here is how much of TeX's memory you used:
- 678 strings out of 481134
- 9715 string characters out of 5917333
- 252463 words of memory out of 5000000
- 16781 multiletter control sequences out of 15000+600000
- 540678 words of font info for 67 fonts, out of 8000000 for 9000
+ 680 strings out of 481134
+ 9736 string characters out of 5917333
+ 254463 words of memory out of 5000000
+ 16782 multiletter control sequences out of 15000+600000
+ 541092 words of font info for 69 fonts, out of 8000000 for 9000
  934 hyphenation exceptions out of 8191
- 24i,6n,22p,224b,186s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 24i,6n,22p,208b,186s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on section1.dvi (1 page, 2052 bytes).
+Output written on section1.dvi (1 page, 4076 bytes).

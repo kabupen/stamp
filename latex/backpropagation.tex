@@ -1,0 +1,112 @@
+\documentclass[a4j, uplatex]{jsarticle}
+
+\usepackage{bm}
+
+\begin{document}
+
+\section{線形について}
+
+以下を満たす関数を線形写像という。
+
+\begin{eqnarray}
+    f(x+y) &=& f(x) + f(y) \\
+    f(ax) &=& af(x)
+\end{eqnarray}
+
+
+とくに $f(ax)=af(x)$ について。関数の外に$a$を出せる場合、線形であると考えれることは盲点である。
+
+\section{行列}
+
+\subsection{正方行列}
+
+$n\times n$の正方形の形をした行列のこと
+
+\subsection{対角行列}
+
+正方行列 $A = a_{ij}$ において、対角成分 ($a_{ii}$) 以外がすべて 0 であるような行列を対角行列とよぶ
+
+
+\subsection{実対称行列}
+
+$m \times n $行列 $A$ に対して、$a_{ij} = a_{ji}$ が成り立つ場合、対称行列とよぶ
+
+
+\subsection{反対称行列、交代行列}
+
+$A^T = -A$
+
+
+\subsection{転置行列}
+
+$(m, n)$行列の縦横を逆にした $(n,m)$行列を $A$の転置行列という
+
+
+\subsection{複素共役行列}
+
+行列 $A=a_{ij}$ の各成分を、共役複素数で置き換えた行列 $\bar{A} = (\bar{a}_{ij})$ を複素共役行列という。
+
+
+\subsection{直行 (orthogonal)}
+
+$$
+\mathrm{U^TU = I}
+$$
+
+$$
+U^TUU^{-1} = U^{-1} \\
+U^T = U^{-1}
+$$
+
+
+\subsection{正則行列}
+
+$n$次行列$A$に対し、$XA=AX=E$ となる行列 $X$ （逆行列） が存在するとき、$A$を正則行列という。
+$A$が正則ならば逆行列は一つしか無い。
+
+\subsection{随伴行列、エルミート行列}
+
+複素共役を取って転置した$\bar{A}^T$ を$A$の随伴行列と呼ぶ。
+特に正方行列が $A=A^\ast$を満たす場合、Aをエルミート行列と呼ぶ。
+特に実エルミート行列を実対称行列と呼ぶ。
+
+$$
+A = \overline{A}^T = A^\ast
+$$
+
+
+\subsection{ユニタリ行列}
+
+正方行列$A$が $A^\ast A=E$をいたす場合、$A$をユニタリ行列と呼ぶ。特に実ユニタリ行列を直交行列と呼ぶ。
+
+
+
+
+\section{誤差逆伝播法}
+
+誤差関数は
+
+\begin{equation}
+    E_n = \frac{1}{2} \sum_{k=1}^{m} (y_k(\bm{x}) - d_j)^2
+\end{equation}
+
+ここで$m$は出力層のノード数（出力値の次元数）を表す。
+ネットワークの訓練は、この誤差関数が最小値（極小）を持つように重み係数を設定することである。
+そのために勾配降下法では
+\begin{equation}
+    w \leftarrow w - \eta \nabla E 
+\end{equation}
+として、現時点での誤差関数の勾配を使って重みの更新を行う。
+
+第$\ell$層の重み$w_{ji}^\ell$についての勾配を計算する。
+誤差関数は
+\begin{eqnarray}
+    E_n 
+    &=& \frac{1}{2} \sum_{k=1}^{m} \left( f \left( w_{kj}^{(\ell)}z_j^{(\ell)} \right) - d_j \right)^2 \\
+    &=& \frac{1}{2} \sum_{k=1}^{m} \left( f \left( w_{kj}^{(\ell-1)} f \left( w_{ji}^{(\ell-1)}z_i^{(\ell-2)} \right)\right) - d_j \right)^2 \\
+\end{eqnarray}
+
+
+
+
+\end{document}

@@ -1,0 +1,17 @@
+# Fdb version 3
+["pdflatex"] 1622724747 "/Users/takeda/workspace/public/github/stap/books/mva/latex/section1.tex" "/Users/takeda/workspace/public/github/stap/books/mva/latex/section1.pdf" "section1" 1622724748
+  "/Users/takeda/workspace/public/github/stap/books/mva/latex/section1.aux" 1622724747 8 a94a2480d3289e625eea47cd1b285758 ""
+  "/Users/takeda/workspace/public/github/stap/books/mva/latex/section1.tex" 1622724746 137 766e0555108f934b5f64242736ac6214 ""
+  "/usr/local/texlive/2020/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def" 1584044900 25398 19ae1e59d7f4a47fefb457d851f6f503 ""
+  "/usr/local/texlive/2020/texmf-dist/tex/latex/tools/bm.sty" 1580683321 12671 ace2aac118748ea10d1717448ecafbed ""
+  "/usr/local/texlive/2020/texmf-dist/tex/platex/jsclasses/jsarticle.cls" 1580683346 60623 359a5f3daadb4509ddbf472557e5a531 ""
+  "/usr/local/texlive/2020/texmf-dist/web2c/texmf.cnf" 1583102494 39451 60d7debd9ef8ece44cbe965493576c2d ""
+  "/usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt" 1589971626 2432463 be5d8060da3171ba49668d806cdf2c0f ""
+  "/usr/local/texlive/2020/texmf.cnf" 1586288231 577 d60164b4589a341208aff7a667fbbdcb ""
+  "section1.aux" 1622724747 8 a94a2480d3289e625eea47cd1b285758 "pdflatex"
+  "section1.tex" 1622724746 137 766e0555108f934b5f64242736ac6214 ""
+  (generated)
+  "/Users/takeda/workspace/public/github/stap/books/mva/latex/section1.log"
+  "section1.log"
+  "/Users/takeda/workspace/public/github/stap/books/mva/latex/section1.pdf"
+  "section1.aux"
