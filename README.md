@@ -1,4 +1,4 @@
-# STatisc Analysis with Programming tools
+# STatiscal Analysis and Machine learnings with Programming tools
 
 welcome to stap repositry!
 
